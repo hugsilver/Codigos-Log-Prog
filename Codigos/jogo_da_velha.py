@@ -10,6 +10,56 @@ tabuleiro = [
 
 jogador = 'X'
 
+def temGanhador():
+    #Revificando as linhas
+    for linhas in range(3):
+        if(
+        tabuleiro[linha][0] != ' ' and    
+        tabuleiro[linha][0] == tabuleiro[linha][1] and
+        tabuleiro[linha][0] == tabuleiro[linha][2]
+        ):
+            print(f'{tabuleiro[linha][0]} GANHOU!!!')
+            return True
+
+    #Revificando as linhas
+        for linhas in range(3):
+            if(
+            tabuleiro[0][coluna] != ' ' and    
+            tabuleiro[0][coluna] == tabuleiro[1][coluna] and
+            tabuleiro[0][coluna] == tabuleiro[2][coluna]
+            ):
+                print(f'{tabuleiro[0][coluna]} GANHOU!!!')
+                return True
+
+    #Verificar diagonais
+    if (
+        tabuleiro[1][1] != ' ' and
+        (
+            (
+                tabuleiro[0][0] == tabuleiro[1][1] and 
+                tabuleiro[0][0] == tabuleiro[2][2]
+            ) or 
+            (
+                tabuleiro[0][2] == tabuleiro[1][1] and 
+                tabuleiro[1][1] == tabuleiro[2][0])
+        )
+    ):
+        print(f'{tabuleiro[1][1]} GANHOU!!!')
+        return True
+
+    #Se não teve ganhador - Ai retorna salfo        
+    return False
+
+def temEmpate():
+
+    for linha in range(3):
+        for coluna in range(3):
+            for coluna in range(3):
+                if tabuleiro[linha][coluna] == ' ':
+                    return False
+    print('GALOU')
+    return True
+
 def exibeTab():
     for linha in tabuleiro:
         print(' | '.join(linha)) # Join é um método - Junta coisas de uma lista com o separador escolhido
@@ -51,8 +101,9 @@ while True:
     except (ValueError, IndexError): #Podendo tratar os erros de forma separada - Para mostar mensagens mais coerentes para cada exesão  
         print('Digite valores numéricos entre 0 e 2') #Não quebra e trata o erro 
 
-
-
+    if temGanhador() or temEmpate():
+        break
+    
     exibeTab()
 exibeTab()
 
