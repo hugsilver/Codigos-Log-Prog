@@ -15,27 +15,38 @@ def exibir_labirinto(labirinto):
         print(linha)
 
 def nao_pode_seguir(labirinto, linha, coluna):
-    if (linha >= len(labirinto) or coluna >= len(labirinto) or labirinto[linha][coluna] == 1):
+    # Retorna True se a posição for inválida: fora dos limites, parede (1) ou já visitada (2)
+    if (linha >= len(labirinto) or coluna >= len(labirinto) or
+        linha < 0 or
+        coluna < 0 or
+        labirinto[linha][coluna] == 1 or   # parede
+        labirinto[linha][coluna] == 2):    # já visitado
         return True
+    return False  # posição válida e disponível
 
 def explorar(labirinto, linha, coluna):
     print(f'Explorando ({linha}, {coluna})')
-    if nao_pode_seguir(labirinto,  linha, coluna):
-        print(f'Não pode seguir {linha}, {coluna})')
+
+    # Bloqueia caminhos inválidos (fora do labirinto, paredes ou já visitados)
+    if nao_pode_seguir(labirinto, linha, coluna):
+        print(f'Não pode seguir ({linha}, {coluna})')
         return False
+
+    # Chegou na saída (9)
     if labirinto[linha][coluna] == 9:
         print('Chegou ao final!')
         return True
-    
+
+    # Marca a posição atual como visitada para não revisitar
+    labirinto[linha][coluna] = 2
+
+    # Tenta cada direção com recursão; retorna True se qualquer caminho levar à saída
     return (
-        explorar(labirinto, linha, coluna + 1)  or #Direita
-        explorar(labirinto, linha + 1, coluna) or #Baixo
-        explorar(labirinto, linha - 1, coluna) or #Esquerda
-        explorar(labirinto, linha+ 2, coluna) #Cima
-        
-
+        explorar(labirinto, linha, coluna + 1) or  # Direita
+        explorar(labirinto, linha + 1, coluna) or  # Baixo
+        explorar(labirinto, linha, coluna - 1) or  # Esquerda  ← corrigido: era linha - 1
+        explorar(labirinto, linha - 1, coluna)     # Cima      ← corrigido: era linha + 2
     )
-
 
 
 lab = criar_labirinto(5)
