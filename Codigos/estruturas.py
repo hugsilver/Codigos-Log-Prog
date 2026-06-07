@@ -30,13 +30,13 @@
 #Da para desenvolver as proprias estrutura de dados
 #
 # Estruturtas de dados
-# - Listas: conjunto de dados ordenados nutável
+# - Listas: conjunto de dados ordenados mutável
 
 lista = [1, 4, 3, 4]
 frutas = ['banana', 'maça']
 mista = [1, 'texto', 5, True]
 
-# - Tuplas: conunto de dados ordenados - imutável
+# - Tuplas: conjunto de dados ordenados - imutável
 coordenadas = (5, 6) #Corelação entre eles e a ordem faz diferença
 tupla = (5, 4, 3, 2)
 
