@@ -1,51 +1,86 @@
 # Lista: mutável, usa colchetes — pode adicionar, remover e alterar itens
 lista = [1, 2, 3, 4]
 
-# Tupla: imutável, usa parênteses — não pode ser alterada após criada
+# Tupla: imutável, usa parênteses — os valores nunca mudam após a criação
 tupla = (1, 2, 3, 4)
 
-# Lista de tarefas começa vazia; será preenchida pelas funções abaixo
+# Lista global que armazena as tarefas como tuplas (nome, status)
 tarefas = []
 
 
 def adicionaTarefa(tarefa):
-    # Cria uma tupla (nome, status) e adiciona na lista de tarefas
+    # Empacota o nome e o status inicial numa tupla e insere na lista global
     novaTarefa = (tarefa, 'Pendente')
     tarefas.append(novaTarefa)
 
 
 def exibeTarefas():
-    # Percorre cada tarefa e exibe o nome e o status atual
+    # tarefa[0] = nome da tarefa | tarefa[1] = status atual
     for tarefa in tarefas:
         print(f'{tarefa[0]} - Status: {tarefa[1]}')
 
 
 def concluirTarefa(tarefa):
-    global tarefas  # acessa a variável global para poder substituí-la
-    tarefa = [(t[0], 'concluída') if t[0] == tarefa else t for t in tarefas] #Entender mais
+    global tarefas  # necessário para reatribuir a variável global
 
+    # List comprehension: percorre todas as tarefas e substitui o status
+    # da tarefa que bate com o nome recebido; as demais ficam intactas (else t)
+    tarefas = [(t[0], 'concluída') if t[0] == tarefa else t for t in tarefas]
+
+    # Equivalente sem list comprehension (versão mais longa):
     '''
-     novaLista = []
+    novaLista = []
     for t in tarefas:
-        # Se o nome bate com a tarefa buscada, substitui o status; senão mantém igual
         novaLista.append(t if t[0] != tarefa else (tarefa, 'Concluída'))
-    tarefas = novaLista  # substitui a lista antiga pela nova com o status atualizado
+    tarefas = novaLista
     '''
+
+def removerTarefa(tarefa):
+    global tarefas
+    tarefas = [t for t in tarefas if t[0] != tarefa] #Devolver uma lista filtrada
+
+def buscarTarefa(tarefa):
+    resultado = [t for t in tarefas if t[0].lower() == tarefa.lower()]
+    if resultado: #Se resultado é uma lista não vazia
+        for titulo, status in resultado:
+            print(f'Encontrada: {titulo} - Status: {status}')
+    else:
+        print(f'Tarefa não encontrada: {tarefa}')
+
+
+'''
+def buscarTarefa(tarefa):
+    for t in tarefas:
+        if t[0] == tarefa:
+            print(f'Tarefa encontrada: {t[0]} - Status: {t[1]}')
+            return #"Matar" a função
+    print(f'Não achei: {tarefa}')
+'''
 
 
 adicionaTarefa('Arrumar a cama')
-adicionaTarefa('Lavr a louça')
+adicionaTarefa('Lavar a louça')
 exibeTarefas()
 
+buscarTarefa('Arrumar a cama')
+buscarTarefa('Ir ao mercado')
+
+
+'''
 print('Agora vou concluir')
 concluirTarefa('Arrumar a cama')
 exibeTarefas()
+print('Agora removendo')
+#concluirTarefa('ir ao mercado')
+removerTarefa('Arrumar a cama')
+exibeTarefas()
+'''
 
 
-# List Comprehension — cria uma lista nova de forma compacta - NÃO CONHECIA - ABRE MUITAS POSSIBILIDADE - VER MAIS OBRE - ESTUDAR
+# List Comprehension — forma compacta de criar listas com filtro e transformação
 # Sintaxe: [expressão  for item in lista  if condição]
+'''
 lista = [1, 5, 9]
-novaLista = [n * 2 for n in lista if n > 7]  # pega só os n > 7 e dobra o valor - Método permite que faça filtros muito rápido
-print(novaLista)  # resultado: [18]  (só o 9 passa pelo filtro: 9 * 2 = 18)
-
-
+novaLista = [n * 2 for n in lista if n > 7]  # filtra n > 7, depois dobra: 9 * 2 = 18
+print(novaLista)  #[18]
+'''
